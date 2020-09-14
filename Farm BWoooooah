@@ -12,16 +12,41 @@ class crop:
         self._water_need  = water_need
         self._status    = "seed"
         self._type  ="generic"
-        
+
+    def needs(self):
+      return {'light need':self._light_need,'water need':self._water_need}
+    def report(self):
+      return {'type':self._type,'status':self._status,'growth':self._growth,'days growing':self._days_growing}
+
+    def update_status(self):
+      if self._growth > 15:
+        self._status = "Old"
+      elif self._growth > 10:
+        self._status = "Mature"
+      elif self._growth > 5:
+        self._status = "Young"
+      elif self._growth > 0:
+        self._status = "Seedling"
+      elif self._growth == 0:
+        self._status = "Seed"
+
+
+    def grow(self,light,water):
+      if light >= self._light_need and water >= self._water_need:
+        self._growth += self._growth_rate
+
+      self._days_growing += 1
+
+      self.update_status()
+
+
 def main():
     new_crop = crop(1,4,3)
-    print(new_crop._status)
-    print(new_crop._light_need)
-    print(new_crop._water_need)
-    new_crop2 = crop(2,5,7)
-    print(new_crop2._status)
-    print(new_crop2._light_need)
-    print(new_crop2._water_need)
-    
+    print(new_crop.needs())
+    print(new_crop.report())
+    new_crop.grow(4,4)
+    print(new_crop.report())
+
+        
 if __name__=="__main__":
     main()
